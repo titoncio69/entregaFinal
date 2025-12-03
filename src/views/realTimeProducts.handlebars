@@ -20,7 +20,6 @@
     const productsList = document.getElementById("productsList");
     const form = document.getElementById("productForm");
 
-    // Carga inicial recibida por socket desde el servidor
     socket.on("productsUpdated", (products) => {
         productsList.innerHTML = "";
         products.forEach(p => {
@@ -33,7 +32,6 @@
         });
     });
 
-    // Enviar producto desde el form vía socket
     form.addEventListener("submit", (e) => {
         e.preventDefault();
         const data = Object.fromEntries(new FormData(form));

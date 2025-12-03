@@ -15,13 +15,10 @@ export default class ProductManagerMongo {
     return ProductModel.findById(id).lean();
   }
 
-  // Esta función es la clave para la consigna del GET /
   async getProducts({ limit = 10, page = 1, sort, query }) {
     const filter = {};
 
-    // query por categoría o disponibilidad
     if (query) {
-      // ejemplo: query=category:Electrónica o query=status:true
       const [field, value] = query.split(':');
       if (field === 'category') {
         filter.category = value;

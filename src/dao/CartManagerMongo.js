@@ -10,32 +10,12 @@ export default class CartManagerMongo {
     return cart.toObject();
   }
 
-  // async addProductToCart(cid, pid, quantity = 1) {
-  //   const cart = await CartModel.findById(cid);
-  //   if (!cart) return null;
-
-  //   const existing = cart.products.find(
-  //     (p) => p.product && p.product.toString() === pid
-  //   );
-
-  //   if (existing) {
-  //     existing.quantity += quantity;
-  //   } else {
-  //     cart.products.push({ product: pid, quantity });
-  //   }
-
-  //   await cart.save();
-  //   return cart;
-  // }
-
   async addProductToCart(cid, pid, quantity = 1) {
   const cart = await CartModel.findById(cid);
   if (!cart) return null;
 
-  // limpiar productos corruptos
   cart.products = cart.products.filter(p => p.product);
 
-  // buscar si ya existe
   const existing = cart.products.find(
     (p) => p.product.toString() === pid
   );
@@ -51,7 +31,6 @@ export default class CartManagerMongo {
 }
 
   async updateCartProducts(cid, products) {
-    // products: [{ product: pid, quantity }]
     const cart = await CartModel.findById(cid);
     if (!cart) return null;
 

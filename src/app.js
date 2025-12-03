@@ -10,7 +10,6 @@ import cartsRouter from './routes/carts.router.js';
 import viewsRouter from './routes/views.router.js';
 import ProductManagerMongo  from './dao/ProductManagerMongo.js';
 
-// Para __dirname en ES Modules
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -27,22 +26,20 @@ app.engine('handlebars', handlebars.engine());
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'handlebars');
 
-// Rutas API
+// Rutas
 app.use('/api/products', productsRouter);
 app.use('/api/carts', cartsRouter);
 
-// Rutas de vistas (home, products, carts, realtime, etc.)
+// Rutas de vistas
 app.use('/', viewsRouter);
 
-// Arranque + Socket.IO
 const httpServer = app.listen(PORT, async () => {
   await connectDB();
-  console.log(`🚀 Server escuchando en http://localhost:${PORT}`);
+  console.log(`Server escuchando en http://localhost:${PORT}`);
 });
 
 const io = new SocketServer(httpServer);
 
-// inyectar io en req para usarlo en controladores si quieres
 app.use((req, res, next) => {
   req.io = io;
   next();
@@ -51,13 +48,11 @@ app.use((req, res, next) => {
 const productService = new ProductManagerMongo();
 
 io.on("connection", async (socket) => {
-    console.log("🟢 Nuevo cliente conectado:", socket.id);
+    console.log("Nuevo cliente conectado:", socket.id);
 
-    // 1) Enviar lista inicial de productos
     const { products } = await productService.getProducts({ limit: 100, page: 1 });
     socket.emit("productsUpdated", products);
 
-    // 2) Crear producto desde el formulario WebSocket
     socket.on("newProduct", async (data) => {
         try {
             await productService.createProduct(data);
@@ -71,7 +66,6 @@ io.on("connection", async (socket) => {
         }
     });
 
-    // 3) Eliminar producto desde WebSocket
     socket.on("deleteProduct", async (pid) => {
         try {
             await productService.deleteProduct(pid);

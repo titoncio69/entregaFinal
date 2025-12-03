@@ -65,7 +65,6 @@ export const createProduct = async (req, res) => {
   try {
     const newProduct = await productService.createProduct(req.body);
 
-    // emitir actualización por socket si quieres reutilizar realtime
     if (req.io) {
       const result = await productService.getProducts({
         limit: 100,

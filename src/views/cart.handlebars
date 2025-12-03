@@ -8,7 +8,6 @@
       <p><strong>Categoría:</strong> {{this.product.category}}</p>
       <p><strong>Cantidad:</strong> {{this.quantity}}</p>
 
-      <!-- Botón para eliminar un producto del carrito -->
       <form action="/api/carts/{{../cart._id}}/products/{{this.product._id}}" method="POST">
         <input type="hidden" name="_method" value="DELETE" />
         <button>Eliminar del carrito</button>

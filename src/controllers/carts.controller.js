@@ -45,11 +45,10 @@ export const addProductToCart = async (req, res) => {
   }
 };
 
-// PUT api/carts/:cid -> reemplazar todo el arreglo de productos
 export const updateCartProducts = async (req, res) => {
   try {
     const { cid } = req.params;
-    const { products } = req.body; // [{ product: pid, quantity }, ...]
+    const { products } = req.body;
 
     const cart = await cartService.updateCartProducts(cid, products);
     if (!cart)
@@ -64,7 +63,6 @@ export const updateCartProducts = async (req, res) => {
   }
 };
 
-// PUT api/carts/:cid/products/:pid -> actualizar SOLO cantidad
 export const updateProductQuantity = async (req, res) => {
   try {
     const { cid, pid } = req.params;
@@ -84,7 +82,6 @@ export const updateProductQuantity = async (req, res) => {
   }
 };
 
-// DELETE api/carts/:cid/products/:pid -> eliminar producto específico
 export const deleteProductFromCart = async (req, res) => {
   try {
     const { cid, pid } = req.params;
@@ -102,7 +99,6 @@ export const deleteProductFromCart = async (req, res) => {
   }
 };
 
-// DELETE api/carts/:cid -> eliminar todos los productos
 export const clearCart = async (req, res) => {
   try {
     const { cid } = req.params;

@@ -7,12 +7,10 @@ const router = Router();
 const productService = new ProductManagerMongo();
 const cartService = new CartManagerMongo();
 
-// Home o redirección a /products
 router.get('/', (req, res) => {
   res.redirect('/products');
 });
 
-// Vista productos con paginación
 router.get('/products', async (req, res) => {
   try {
     let { limit = 10, page = 1, sort, query } = req.query;
@@ -45,7 +43,6 @@ router.get('/products', async (req, res) => {
   }
 });
 
-// Vista detalle de producto (opcional)
 router.get('/products/:pid', async (req, res) => {
   try {
     const { pid } = req.params;
@@ -59,7 +56,6 @@ router.get('/products/:pid', async (req, res) => {
   }
 });
 
-// Vista de un carrito específico
 router.get('/carts/:cid', async (req, res) => {
   try {
     const { cid } = req.params;
@@ -73,7 +69,6 @@ router.get('/carts/:cid', async (req, res) => {
   }
 });
 
-// Mantienes tu vista de realtime
 router.get('/realtimeproducts', (req, res) => {
   res.render('realTimeProducts');
 });
