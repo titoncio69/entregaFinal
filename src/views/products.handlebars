@@ -1,0 +1,81 @@
+<h1>Listado de Productos</h1>
+
+<button onclick="crearCarrito()">
+  Crear nuevo carrito
+</button>
+
+<p id="message"></p>
+
+<script>
+  async function crearCarrito() {
+    try {
+      const res = await fetch('/api/carts', {
+        method: 'POST',
+        headers: { "Content-Type": "application/json" }
+      });
+
+      const data = await res.json();
+
+      if (data.status === "success") {
+        document.getElementById("message").innerText =
+          "Carrito creado: " + data.payload._id;
+
+        // recargar página para mostrarlo en los select
+        setTimeout(() => location.reload(), 1000);
+      } else {
+        alert("Error creando carrito");
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Error conectando al servidor");
+    }
+  }
+</script>
+
+<ul>
+  {{#each products}}
+  <li style="margin-bottom: 20px;">
+    <h3>{{this.title}}</h3>
+    <p>{{this.description}}</p>
+    <p><strong>Precio:</strong> ${{this.price}}</p>
+    <p><strong>Categoría:</strong> {{this.category}}</p>
+    <p><strong>Stock:</strong> {{this.stock}}</p>
+
+    <!-- Link opcional para ver detalle -->
+    <a href="/products/{{this._id}}">Ver detalle</a>
+
+    <form method="POST" style="margin-top: 10px;"
+      onsubmit="this.action='/api/carts/' + this.cartId.value + '/products/' + '{{this._id}}'">
+
+      <label>Selecciona un carrito:</label>
+      <select name="cartId" required>
+        {{#each ../carts}}
+        <option value="{{this._id}}">{{this._id}}</option>
+        {{/each}}
+      </select>
+
+      <br><br>
+
+      <label>Cantidad:</label>
+      <input type="number" name="quantity" value="1" min="1" />
+
+      <button type="submit">Agregar al carrito</button>
+    </form>
+
+  </li>
+  {{/each}}
+</ul>
+
+<hr>
+
+<div style="margin-top: 20px;">
+  {{#if hasPrevPage}}
+  <a href="/products?page={{prevPage}}">⬅ Página anterior</a>
+  {{/if}}
+
+  <span style="margin: 0 10px;">Página {{page}}</span>
+
+  {{#if hasNextPage}}
+  <a href="/products?page={{nextPage}}">Página siguiente ➡</a>
+  {{/if}}
+</div>

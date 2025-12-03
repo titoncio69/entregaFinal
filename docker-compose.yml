@@ -1,0 +1,17 @@
+version: "3.9"
+
+services:
+  mongo:
+    image: mongo:6.0
+    container_name: mongo_coder
+    restart: always
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: coder
+      MONGO_INITDB_ROOT_PASSWORD: coder123
+    volumes:
+      - mongo_data:/data/db
+
+volumes:
+  mongo_data:

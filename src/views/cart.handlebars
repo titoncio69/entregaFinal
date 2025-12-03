@@ -1,0 +1,21 @@
+<h1>Carrito {{cart._id}}</h1>
+
+<ul>
+  {{#each cart.products}}
+    <li style="margin-bottom: 15px;">
+      <h3>{{this.product.title}}</h3>
+      <p><strong>Precio:</strong> ${{this.product.price}}</p>
+      <p><strong>Categoría:</strong> {{this.product.category}}</p>
+      <p><strong>Cantidad:</strong> {{this.quantity}}</p>
+
+      <!-- Botón para eliminar un producto del carrito -->
+      <form action="/api/carts/{{../cart._id}}/products/{{this.product._id}}" method="POST">
+        <input type="hidden" name="_method" value="DELETE" />
+        <button>Eliminar del carrito</button>
+      </form>
+
+    </li>
+  {{/each}}
+</ul>
+
+<a href="/products">⬅ Seguir comprando</a>
